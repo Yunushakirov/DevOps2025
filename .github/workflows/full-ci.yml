@@ -1,56 +1,85 @@
-stages:
-  - build
-  - testing
-  - packaging
-  - deploy
+name: Full CI Pipeline — Student Yunus
 
-# ----------------------
-# Build Stage
-# ----------------------
-build_app:
-  stage: build
-  script:
-    - echo "Preparing build environment..."
-    - echo "CI executed by student: Yunus"
-    - echo "Building application..."
-    - echo "Build completed by Yunus"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-# ----------------------
-# Testing Stage
-# ----------------------
-unit_tests:
-  stage: testing
-  script:
-    - echo "Running unit tests..."
-    - echo "Unit tests passed (Yunus)"
+jobs:
+  build:
+    name: Build Stage (Yunus)
+    runs-on: [self-hosted]   # использует твой локальный runner
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-integration_tests:
-  stage: testing
-  script:
-    - echo "Running integration tests..."
-    - echo "Integration tests passed (Yunus)"
+      - name: Prepare build environment
+        run: |
+          echo "Preparing build environment..."
+          echo "CI executed by student: Yunus"
 
-# ----------------------
-# Packaging Stage
-# ----------------------
-package_app:
-  stage: packaging
-  script:
-    - mkdir -p dist
-    - echo "Artifact created by Yunus" > dist/artifact.txt
-  artifacts:
-    paths:
-      - dist/
+      - name: Build project
+        run: |
+          echo "Building project..."
+          echo "Build completed by Yunus"
 
-# ----------------------
-# Deployment Stage
-# ----------------------
-deploy_app:
-  stage: deploy
-  script:
-    - echo "Deploying application..."
-    - echo "Deployment performed by Yunus"
-    - echo "Deployment completed by Yunus at $(date)" > deployment_yunus.txt
-  artifacts:
-    paths:
-      - deployment_yunus.txt
+  testing:
+    name: Testing Stage (Yunus)
+    runs-on: [self-hosted]
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run unit tests
+        run: |
+          echo "Running unit tests..."
+          echo "Unit tests passed (Yunus)"
+
+      - name: Run integration tests
+        run: |
+          echo "Running integration tests..."
+          echo "Integration tests passed (Yunus)"
+
+  packaging:
+    name: Packaging Stage (Yunus)
+    runs-on: [self-hosted]
+    needs: testing
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create artifacts
+        run: |
+          mkdir -p dist
+          echo "Artifact created by Yunus" > dist/artifact.txt
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact-yunus
+          path: dist/
+
+  deploy:
+    name: Deployment Stage (Yunus)
+    runs-on: [self-hosted]
+    needs: packaging
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy application
+        run: |
+          echo "Deploying application..."
+          echo "Deployment performed by Yunus"
+
+      - name: Create deployment marker
+        run: |
+          echo "Deployment completed by Yunus at $(date)" > deployment_yunus.txt
+
+      - name: Upload deployment log
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-log-yunus
+          path: deployment_yunus.txt
