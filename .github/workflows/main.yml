@@ -1,13 +1,16 @@
-name: Test Runner
+name: Test Self-Hosted Runner
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  test:
+  build:
     runs-on: self-hosted
     steps:
-      - name: Check out repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Say Hello
+      - name: Print message
         run: echo "Hello from self-hosted runner!"
