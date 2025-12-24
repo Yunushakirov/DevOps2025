@@ -1,0 +1,85 @@
+name: Full CI Pipeline — Student Yunus
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: Build Stage (Yunus)
+    runs-on: self-hosted
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare build environment
+        run: |
+          echo "Preparing build environment..."
+          echo "CI executed by student: Yunus"
+
+      - name: Build project
+        run: |
+          echo "Building project..."
+          echo "Build completed by Yunus"
+
+  testing:
+    name: Testing Stage (Yunus)
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run unit tests
+        run: |
+          echo "Running unit tests..."
+          echo "Unit tests passed (Yunus)"
+
+      - name: Run integration tests
+        run: |
+          echo "Running integration tests..."
+          echo "Integration tests passed (Yunus)"
+
+  packaging:
+    name: Packaging Stage (Yunus)
+    runs-on: self-hosted
+    needs: testing
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create artifacts
+        run: |
+          mkdir -p dist
+          echo "Artifact created by Yunus" > dist/artifact.txt
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact-yunus
+          path: dist/
+
+  deploy:
+    name: Deployment Stage (Yunus)
+    runs-on: self-hosted
+    needs: packaging
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy application
+        run: |
+          echo "Deploying application..."
+          echo "Deployment performed by Yunus"
+
+      - name: Create deployment marker
+        run: |
+          echo "Deployment completed by Yunus at $(date)" > deployment_yunus.txt
+
+      - name: Upload deployment log
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-log-yunus
+          path: deployment_yunus.txt
