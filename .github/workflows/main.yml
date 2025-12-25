@@ -6,21 +6,11 @@ on:
       - main
 
 jobs:
-<<<<<<< HEAD
   build:
-    runs-on: self-hosted
-=======
-  test:
-    runs-on: ubuntu-latest   # теперь GitHub-hosted runner
->>>>>>> dc0f0150af94dd310808228b0cc58fa91a835c2d
+    runs-on: [self-hosted, Windows, X64]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-<<<<<<< HEAD
       - name: Print message
         run: echo "Hello from self-hosted runner!"
-=======
-      - name: Say Hello
-        run: echo "Hello from GitHub-hosted runner!"
->>>>>>> dc0f0150af94dd310808228b0cc58fa91a835c2d
